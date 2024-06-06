@@ -1,0 +1,28 @@
+body {
+    font-family: 'Comic Sans MS', monospace;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+#container {
+    width: 500px;
+    height: 500px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.pixel {
+    border: 0px;
+    aspect-ratio: 1 / 1;
+    margin: 0;
+    width: 31.25px;
+    height: auto;
+    background-color: #f2f2f0;
+}
+
+.colourChange {
+    background-color: #424242;
+}

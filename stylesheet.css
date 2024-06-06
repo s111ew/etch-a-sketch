@@ -5,9 +5,19 @@ body {
     justify-content: center;
     align-items: center;
     margin: 0;
+    z-index: 0;
+}
+
+h1 {
+    color: #424242;
+    border: 5px solid #424242;
+    padding: 5px 25px 5px 25px;
+    border-radius: 12%/50%;
 }
 
 #container {
+    margin-top: 40px;
+    margin-bottom: 75px;
     width: 500px;
     height: 500px;
     display: flex;
@@ -15,8 +25,8 @@ body {
 }
 
 .pixel {
-    border: 0px;
-    aspect-ratio: 1 / 1;
+    box-sizing: border-box;
+    border: 0.1px solid #d9d9d9;
     margin: 0;
     width: 31.25px;
     height: auto;
@@ -25,4 +35,73 @@ body {
 
 .colourChange {
     background-color: #424242;
+    border: none;
 }
+
+.buttonsContainer {
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+}
+
+button {
+    all: unset;
+    color: #424242;
+    border: 3px solid #424242;
+    padding: 10px 30px;
+    cursor: pointer;
+}
+
+#reset {
+    border-radius: 22%/50%;
+}
+
+#changeColour {
+    border-radius: 13%/50%;
+}
+
+#changeGridSize {
+    border-radius: 15%/50%;
+}
+
+.menuBackground {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: #424242;
+    opacity: 30%;
+}
+
+.menuPopUp {
+    position: absolute;
+    z-index: 2;
+    width: 400px;
+    height: 250px;
+    background-color: #424242;
+    border-radius: 5%/7%;
+    /* box shadows */
+    -webkit-box-shadow: 0px 0px 30px 6px rgba(0,0,0,0.40);
+    -moz-box-shadow: 0px 0px 30px 6px rgba(0,0,0,0.40);
+    box-shadow: 0px 0px 30px 6px rgba(0,0,0,0.40);
+    /* box shadows */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#confirmButton {
+        all: unset;
+        color: #fff;
+        border: 3px solid #fff;
+        padding: 10px 30px;
+        cursor: pointer;
+}
+
+#closeX {
+    font-family: Arial, Helvetica, sans-serif;
+    color: red;
+    align-self: end;
+}
+

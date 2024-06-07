@@ -85,6 +85,14 @@ const resetBoard = () => {
     });
 };
 
+const hardReset = () => {
+    const container = document.querySelector("#container");
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
+        remakeBoard();
+}
+
 const remakeBoard = () => {
     createBoard();
     updateEventListeners();
@@ -253,7 +261,7 @@ const populateColourMenu = () => {
     radioWaterColour.value = "WaterColour";
     if (waterColourMode) {
         radioWaterColour.checked = true;
-    } ;
+    };
 
     const radioWaterColourLabel = document.createElement("label");
     radioWaterColourLabel.HTMLfor = "radioWaterColour";
@@ -269,6 +277,11 @@ const populateColourMenu = () => {
         if (radioNormal.checked) {
             waterColourMode = false;
             updateEventListeners();
+            hardReset();
+        } else if (!radioNormal.checked) {
+            waterColourMode = true;
+            updateEventListeners();
+            hardReset();
         }
     });
 
@@ -276,6 +289,11 @@ const populateColourMenu = () => {
         if (radioWaterColour.checked) {
             waterColourMode = true;
             updateEventListeners();
+            hardReset();
+        } else if (!radioWaterColour.checked) {
+            waterColourMode = false;
+            updateEventListeners();
+            hardReset();
         }
     });
 

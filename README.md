@@ -1,0 +1,1 @@
+In this project, I built on my JS skills by spending a lot of time working with DOM elements and handling events.

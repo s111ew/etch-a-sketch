@@ -1,9 +1,9 @@
 const playGame = () => {
     createBoard();
-    colourPixels();
     resetBoard();
     displayGridMenu();
     displayColourMenu();
+    updateEventListeners();
 }
 
 const createBoard = () => {
@@ -19,7 +19,7 @@ const createBoard = () => {
     }
 };
 
-const colourPixels = () => {
+const updateEventListeners = () => {
     const pixels = document.querySelectorAll(".pixel");
     let isMouseDown = false;
 
@@ -27,18 +27,51 @@ const colourPixels = () => {
     document.addEventListener("mouseup", () => isMouseDown = false);
 
     pixels.forEach((pixel) => {
-        pixel.addEventListener("mouseover", () => {
-            if (isMouseDown) {
+        pixel.onmouseover = null;
+        pixel.onmousedown = null;
+    });
+
+    if (waterColourMode) {
+        pixels.forEach((pixel) => {
+            let opacity = 0.1;
+
+            pixel.addEventListener("mouseover", () => {
+                if (isMouseDown) {
+                    pixel.style.backgroundColor = liveColour;
+                    pixel.style.border = `0.1px solid ${liveColour}`;
+
+                    if (opacity < 1) {
+                        opacity += 0.1;
+                    }
+                    pixel.style.opacity = opacity;
+                }
+            });
+
+            pixel.addEventListener("mousedown", () => {
                 pixel.style.backgroundColor = liveColour;
                 pixel.style.border = `0.1px solid ${liveColour}`;
-            }
-        });
 
-        pixel.addEventListener("mousedown", () => {
-            pixel.style.backgroundColor = liveColour;
-            pixel.style.border = `0.1px solid ${liveColour}`;
+                if (opacity < 1) {
+                    opacity += 0.1;
+                }
+                pixel.style.opacity = opacity;
+            });
         });
-    });
+    } else {
+        pixels.forEach((pixel) => {
+            pixel.addEventListener("mouseover", () => {
+                if (isMouseDown) {
+                    pixel.style.backgroundColor = liveColour;
+                    pixel.style.border = `0.1px solid ${liveColour}`;
+                }
+            });
+
+            pixel.addEventListener("mousedown", () => {
+                pixel.style.backgroundColor = liveColour;
+                pixel.style.border = `0.1px solid ${liveColour}`;
+            });
+        });
+    }
 };
 
 const resetBoard = () => {
@@ -54,7 +87,7 @@ const resetBoard = () => {
 
 const remakeBoard = () => {
     createBoard();
-    colourPixels();
+    updateEventListeners();
 }
 
 const displayGridMenu = () => {
@@ -186,10 +219,77 @@ const populateColourMenu = () => {
     const colourButtonsContainer = document.createElement("div");
     colourButtonsContainer.id = "colourButtonsContainer";
 
+    const waterColourModeToggle = document.createElement("div");
+    waterColourModeToggle.display = "flex";
+    waterColourModeToggle.flexDirection = "column";
+    waterColourModeToggle.justifyContent = "center";
+    waterColourModeToggle.alignItems = "center";
+    waterColourModeToggle.gap = "5px";
+
+    const normalRadioContainer = document.createElement("div");
+    normalRadioContainer.id = "normalRadioContainer";
+    normalRadioContainer.display = "flex";
+    normalRadioContainer.justifyContent = "center";
+    normalRadioContainer.alignItems = "center";
+
+    const radioNormal = document.createElement("input");
+    radioNormal.type = "radio";
+    radioNormal.id = "radioNormal";
+    radioNormal.classList.add("radio");
+    radioNormal.name = "waterColourOnOff";
+    radioNormal.value = "normal";
+    if (!waterColourMode) {
+        radioNormal.checked = true;
+    } ;
+
+    const radioNormalLabel = document.createElement("label");
+    radioNormalLabel.HTMLfor = "radioNormal";
+    radioNormalLabel.textContent = " Normal Brush";
+
+    const radioWaterColour = document.createElement("input");
+    radioWaterColour.type = "radio";
+    radioWaterColour.classList.add("radio");
+    radioWaterColour.name = "waterColourOnOff";
+    radioWaterColour.value = "WaterColour";
+    if (waterColourMode) {
+        radioWaterColour.checked = true;
+    } ;
+
+    const radioWaterColourLabel = document.createElement("label");
+    radioWaterColourLabel.HTMLfor = "radioWaterColour";
+    radioWaterColourLabel.textContent = "Watercolour Brush";
+
+    const waterColourRadioContainer = document.createElement("div");
+    waterColourRadioContainer.id = "waterColourRadioContainer";
+    waterColourRadioContainer.display = "flex";
+    waterColourRadioContainer.justifyContent = "center";
+    waterColourRadioContainer.alignItems = "center";
+
+    radioNormal.addEventListener("change", () => {
+        if (radioNormal.checked) {
+            waterColourMode = false;
+            updateEventListeners();
+        }
+    });
+
+    radioWaterColour.addEventListener("change", () => {
+        if (radioWaterColour.checked) {
+            waterColourMode = true;
+            updateEventListeners();
+        }
+    });
+
+    normalRadioContainer.appendChild(radioNormal);
+    normalRadioContainer.appendChild(radioNormalLabel);
+    waterColourRadioContainer.appendChild(radioWaterColour);
+    waterColourRadioContainer.appendChild(radioWaterColourLabel);
+    waterColourModeToggle.appendChild(normalRadioContainer);
+    waterColourModeToggle.appendChild(waterColourRadioContainer);
+
     const colourPicker = document.createElement("input");
     colourPicker.type = "color";
     colourPicker.id = "colourPicker";
-    colourPicker.value = "#424242";
+    colourPicker.value = liveColour;
 
     const defaultButton = document.createElement("button");
     defaultButton.id = "defaultButton";
@@ -204,11 +304,6 @@ const populateColourMenu = () => {
         liveColour = event.target.value;
     });
 
-    const rainbowButton = document.createElement("button");
-    rainbowButton.id = "rainbowButton";
-    rainbowButton.textContent = "Rainbow";
-
-
     const confirmButton = document.createElement("button");
     confirmButton.id = "confirmButton";
     confirmButton.innerText = "Confirm";
@@ -222,11 +317,12 @@ const populateColourMenu = () => {
     colourMenuPopUp.appendChild(colourButtonsContainer);
     colourButtonsContainer.appendChild(defaultButton);
     colourButtonsContainer.appendChild(colourPicker);
-    colourButtonsContainer.appendChild(rainbowButton);
+    colourButtonsContainer.appendChild(waterColourModeToggle);
     colourMenuPopUp.appendChild(confirmButton);
 }
 
 let pixelCount = 256;
 let liveColour = "#424242"
+let waterColourMode = false;
 
 playGame();

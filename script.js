@@ -308,6 +308,7 @@ const populateColourMenu = () => {
     colourPicker.type = "color";
     colourPicker.id = "colourPicker";
     colourPicker.value = liveColour;
+    colourPicker.cursor = "pointer";
 
     const defaultButton = document.createElement("button");
     defaultButton.id = "defaultButton";

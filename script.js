@@ -314,9 +314,9 @@ const populateColourMenu = () => {
     defaultButton.id = "defaultButton";
     defaultButton.innerText = "Default";
     defaultButton.addEventListener("click", () => {
-        liveColour = "#424242"
+        liveColour = "#000"
         const colourPicker = document.querySelector("#colourPicker");
-        colourPicker.value = "#424242";
+        colourPicker.value = "#000";
     });
 
     colourPicker.addEventListener("input", (event) => {
@@ -341,7 +341,7 @@ const populateColourMenu = () => {
 }
 
 let pixelCount = 256;
-let liveColour = "#424242"
+let liveColour = "#000"
 let waterColourMode = false;
 
 playGame();
